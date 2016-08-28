@@ -1,18 +1,30 @@
-//
-//  ViewController.swift
-//  ASDK Sample
-//
-//  Created by Roy Tang on 29/8/2016.
-//  Copyright © 2016 NA. All rights reserved.
-//
-
 import UIKit
+import AsyncDisplayKit
 
-class ViewController: UIViewController {
+class ViewController: ASViewController {
+  
+  
+  var tableNode: ASTableNode!
+  
+  init() {
+    self.tableNode = ASTableNode()
+    
+    super.init(node: self.tableNode)
+    
+    tableNode.dataSource = self
+    tableNode.delegate = self
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    self.view.backgroundColor = UIColor.whiteColor()
+    
+    self.view.addSubnode(self.tableNode)
   }
 
   override func didReceiveMemoryWarning() {
@@ -20,6 +32,18 @@ class ViewController: UIViewController {
     // Dispose of any resources that can be recreated.
   }
 
-
 }
 
+extension ViewController: ASTableDataSource, ASTableDelegate {
+  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 100000
+  }
+  
+  func tableView(tableView: ASTableView, nodeBlockForRowAtIndexPath indexPath: NSIndexPath) -> ASCellNodeBlock {
+    return {
+      let cell = ASCellNode()
+//      cell.preferredFrameSize = CGSizeMake(tableView.bounds.width, 100)
+      return cell
+    }
+  }
+}
